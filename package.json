@@ -2,9 +2,9 @@
   "name": "wildlife",
   "version": "1.0.0",
   "description": "SoftUni-WildLife-JSweb-Exam",
-  "main": "index.js",
+  "main": "pathToMain",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon --ignore models/data.json"
   },
   "repository": {
     "type": "git",
