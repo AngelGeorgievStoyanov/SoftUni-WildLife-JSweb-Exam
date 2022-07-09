@@ -9,7 +9,8 @@ module.exports = () => (req, res, next) => {
 
     req.auth = {
         register,
-        logout
+        logout,
+        login
 
     };
 
@@ -55,6 +56,22 @@ module.exports = () => (req, res, next) => {
     }
     async function logout() {
         res.clearCookie(COOKIE_NAME);
+    }
+
+
+    async function login({ email, password }) {
+        const user = await userService.getUserByEmail(email);
+
+        if (!user) {
+            throw new Error('Wrong email or password!');
+        } else {
+            const isMatch = await bcrypt.compare(password, user.hashedPassword);
+            if (!isMatch) {
+                throw new Error('Wrong email or password!');
+            } else {
+                req.user = createToken(user);
+            }
+        }
     }
 
 }

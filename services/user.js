@@ -11,14 +11,18 @@ async function createUser(firstName, lastName, email, hashedPassword) {
         hashedPassword
     })
 
-    console.log(user,'-------------')
+  
 
     await user.save();
     return user;
 }
 
-
+async function getUserByEmail(email) {
+    return await User.findOne({ "email":`${email}` });
+   
+}
 module.exports = {
     createUser,
+    getUserByEmail
 
 }
