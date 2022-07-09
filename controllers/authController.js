@@ -6,5 +6,24 @@ router.get('/register', (req, res) => {
 })
 
 
+router.post('/register', async (req, res) => {
+    try {
+   
+        await req.auth.register(req.body)
+     
+        res.redirect('/posts');
+    } catch (err) {
+        const ctx = {
+            title: 'Register',
+            error: err.message,
+            data: {
+                email: req.body.email,
+            }
+        }
+        res.render('register', ctx);
+    }
+})
+
+
 
 module.exports = router;
