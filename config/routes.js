@@ -1,9 +1,10 @@
-const productController = require('../controllers/productController')
+const postsController = require('../controllers/postsController')
 const homeController = require('../controllers/homeController');
-
+const authController = require('../controllers/authController')
 
 module.exports = (app) => {
-   app.use('/product', productController); 
+    app.use('/posts', postsController);
+    app.use('/auth', authController)
     app.use('/', homeController);
     app.use((err, req, res, next) => {
         console.log('---', err.message);

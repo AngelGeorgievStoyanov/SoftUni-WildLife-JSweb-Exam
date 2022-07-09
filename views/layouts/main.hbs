@@ -6,7 +6,7 @@
     <title>Home Page</title>
 
     <!-- Do not forget to change the path to the css file -->
-    <link href="./static/css/style.css" type="text/css" rel="stylesheet">
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet">
 </head>
 
 <body>
@@ -24,18 +24,18 @@
 
         <nav>
             <!-- Do not forget to change the path to the image -->
-            <img src="./static/img/logo.png" alt="logo">
+            <img src="/static/img/logo.png" alt="logo">
 
             <ul class="menu">
-                <li><a href="#">Home</a></li>
+                <li><a href="/posts">Home</a></li>
                 <li><a href="#">All Posts</a></li>
                 <!-- Logged users -->
                 <li><a href="#">Create Post</a></li>
                 <li><a href="#">Posts of {{email-of-user}}</a></li>
                 <li><a href="#">Logout</a></li>
                 <!-- Guest users -->
-                <li><a href="#">Register</a></li>
-                <li><a href="#">Login</a></li>
+                <li><a href="/auth/register">Register</a></li>
+                <li><a href="/auth/login">Login</a></li>
             </ul>
 
         </nav>
