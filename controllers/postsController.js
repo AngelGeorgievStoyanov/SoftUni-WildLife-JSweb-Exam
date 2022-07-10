@@ -14,7 +14,12 @@ router.get('/', async (req, res) => {
 })
 
 
+router.get('/create', async (req, res) => {
 
+  
+
+    res.render('create',{title:'Create post'})
+})
 
 
 module.exports = router;
