@@ -3,6 +3,7 @@ const expressConfig = require('./config/express');
 const databaseConfig = require('./config/database');
 const routesConfig = require('./config/routes');
 const logger = require('./middlewares/logger');
+const storage=require('./middlewares/storage')
 start();
 
 
@@ -16,7 +17,7 @@ async function start() {
     await databaseConfig(app);
     expressConfig(app);
     
-    
+    app.use(await storage())
     routesConfig(app)
 
 
