@@ -65,6 +65,10 @@ router.get('/allPosts', async (req, res) => {
     res.render('allPosts', ctx)
 })
 
+router.get('/details/:id',async(req,res)=>{
+    res.render('details',{title:'Details Page'})
+})
+
 
 
 
