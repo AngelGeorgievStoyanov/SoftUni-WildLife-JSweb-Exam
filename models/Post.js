@@ -10,7 +10,9 @@ const schema = new Schema({
     imageUrl: { type: String, reqired: true },
     description: { type: String, reqired: true },
     votes: [{ type: Schema.Types.ObjectId, ref: 'User', default: [] }],
-    rating: { type: Number, default: 0 }
+    rating: { type: Number, default: 0 },
+    author: { type: Schema.Types.ObjectId, ref: 'User' },
+
 })
 
 

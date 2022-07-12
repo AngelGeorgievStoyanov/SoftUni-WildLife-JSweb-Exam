@@ -1,6 +1,6 @@
 const { Router } = require('express');
 
-
+const { preloadPost } = require('../middlewares/preload')
 
 const router = Router();
 
@@ -35,10 +35,11 @@ router.post('/create', async (req, res) => {
         date: req.body.date,
         imageUrl: req.body.imageUrl,
         description: req.body.description,
+        author: req.user._id,
 
     }
 
-    console.log(post, '--post--')
+
 
 
     try {
@@ -65,8 +66,34 @@ router.get('/allPosts', async (req, res) => {
     res.render('allPosts', ctx)
 })
 
-router.get('/details/:id',async(req,res)=>{
-    res.render('details',{title:'Details Page'})
+router.get('/details/:id', preloadPost(), async (req, res) => {
+
+
+
+    const post = req.data.post;
+
+    console.log(post,'--post--')
+
+    let isowner=false;
+
+    if (post == undefined) {
+        res.redirect('/404')
+    } else {
+
+
+        if(req.user){
+            if(req.data.post.author._id==req.user._id){
+                isowner=true;
+            }
+        }
+    }
+
+    const ctx = {
+        title: 'Details Page',
+        post,
+        isowner
+    }
+    res.render('details', ctx)
 })
 
 

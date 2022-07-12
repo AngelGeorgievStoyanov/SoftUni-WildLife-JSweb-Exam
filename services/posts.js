@@ -18,7 +18,34 @@ async function getAll(query) {
 }
 
 
+async function getById(id) {
+    const post = await Post.findById(id).populate('author').lean()
+
+    if (post) {
+        const viewModel = {
+            _id: post._id,
+            title: post.title,
+            keyword: post.keyword,
+            location: post.location,
+            date: post.date,
+            imageUrl: post.imageUrl,
+            description: post.description,
+            votes: post.votes,
+            rating: post.rating,
+            author: post.author
+
+        }
+
+        return viewModel
+    }else{
+        return undefined;
+
+    }
+}
+
+
 module.exports = {
     create,
-    getAll
+    getAll,
+    getById
 }
