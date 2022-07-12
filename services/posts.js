@@ -64,6 +64,20 @@ function deletePost(postId) {
     return Post.deleteOne({ _id: postId })
 }
 
+async function edit(id,post){
+
+    const exsisting = await Post.findById(id);
+
+    if(!exsisting){
+        throw new ReferenceError('No such ID in database')
+    }
+
+    Object.assign(exsisting,post);
+    return exsisting.save();
+
+
+}
+
 
 module.exports = {
     create,
@@ -71,6 +85,7 @@ module.exports = {
     getById,
     vote,
     getUserById,
-    deletePost
+    deletePost,
+    edit
     
 }

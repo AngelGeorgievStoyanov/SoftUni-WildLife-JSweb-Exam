@@ -189,13 +189,40 @@ router.get('/delete/:id', preloadPost(), isOwner(), async (req, res) => {
 router.get('/edit/:id', preloadPost(), isOwner(), async (req, res) => {
 
     const post = req.data.post
-console.log(post)
     ctx = {
         title: 'Edit Page',
         post
     }
 
     res.render('edit', ctx)
+
+})
+
+
+
+router.post('/edit/:id', preloadPost(), isOwner(), async (req, res) => {
+    const post = {
+        title: req.body.title,
+        keyword: req.body.keyword,
+        location: req.body.location,
+        date: req.body.date,
+        imageUrl: req.body.imageUrl,
+        description: req.body.description
+    }
+    try {
+        await req.storage.edit(req.params.id, post)
+        res.redirect(`/posts/details/${req.params.id}`)
+    } catch (err) {
+        const ctx = {
+            title: 'Edit Post',
+            error: err.message,
+            post
+        }
+
+        res.render('edit', ctx)
+
+    }
+
 
 })
 
