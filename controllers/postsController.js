@@ -2,6 +2,8 @@ const { Router } = require('express');
 
 const { preloadPost } = require('../middlewares/preload')
 
+const { isOwner } = require('../middlewares/guards')
+
 const router = Router();
 
 
@@ -169,6 +171,18 @@ router.get('/votedwn/:id', preloadPost(), async (req, res) => {
 
     res.redirect(`/posts/details/${post._id}`)
 
+})
+
+router.get('/delete/:id', preloadPost(), isOwner(), async (req, res) => {
+    const post = req.data.post;
+
+
+    if (!post) {
+        res.redirect('/404')
+    } else {
+        await req.storage.deletePost(post._id);
+        res.redirect('/posts/allPosts')
+    }
 })
 
 

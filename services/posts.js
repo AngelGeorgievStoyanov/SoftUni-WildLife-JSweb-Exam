@@ -60,12 +60,17 @@ async function getUserById(id) {
     return await User.findById(id).lean()
 }
 
+function deletePost(postId) {
+    return Post.deleteOne({ _id: postId })
+}
+
 
 module.exports = {
     create,
     getAll,
     getById,
     vote,
-    getUserById
+    getUserById,
+    deletePost
     
 }
