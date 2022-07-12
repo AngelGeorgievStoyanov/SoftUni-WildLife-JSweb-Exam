@@ -186,7 +186,18 @@ router.get('/delete/:id', preloadPost(), isOwner(), async (req, res) => {
 })
 
 
+router.get('/edit/:id', preloadPost(), isOwner(), async (req, res) => {
 
+    const post = req.data.post
+console.log(post)
+    ctx = {
+        title: 'Edit Page',
+        post
+    }
+
+    res.render('edit', ctx)
+
+})
 
 
 module.exports = router;
