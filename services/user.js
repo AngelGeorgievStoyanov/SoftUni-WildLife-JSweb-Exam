@@ -21,8 +21,16 @@ async function getUserByEmail(email) {
     return await User.findOne({ "email":`${email}` });
    
 }
+
+async function getUserById(id){
+    return await User.findById(id).lean()
+}
+
+
+
 module.exports = {
     createUser,
-    getUserByEmail
+    getUserByEmail,
+    getUserById
 
 }

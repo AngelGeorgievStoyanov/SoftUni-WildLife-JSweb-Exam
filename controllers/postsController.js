@@ -44,7 +44,7 @@ router.post('/create', async (req, res) => {
 
     try {
         await req.storage.create(post)
-        res.redirect('/')
+        res.redirect('/allPosts')
     } catch (err) {
         let arr = err.message.split(', ')
         const ctx = {
@@ -72,29 +72,105 @@ router.get('/details/:id', preloadPost(), async (req, res) => {
 
     const post = req.data.post;
 
-    console.log(post,'--post--')
 
-    let isowner=false;
-
+    let isowner = false;
+    let userVoted;
+    let allUsersVoteds;
     if (post == undefined) {
         res.redirect('/404')
     } else {
+        userVoted = false;
+        let arrVotesIds;
 
+        if (req.user) {
 
-        if(req.user){
-            if(req.data.post.author._id==req.user._id){
-                isowner=true;
+            if (req.data.post.author._id == req.user._id) {
+                isowner = true;
             }
+
+            arrVotesIds = post.votes
+
+            for (const voteId of arrVotesIds) {
+
+                if (voteId == req.user._id) {
+                    userVoted = true;
+                    break;
+                }
+
+            }
+
+
         }
+
+        let arr = post.votes;
+        const userVoteds = await Promise.all(
+            arr.map(async (elem) => {
+                let a = req.storage.getUserById(elem)
+                return a
+            })
+        )
+
+        allUsersVoteds = userVoteds.map((x) => { return x.firstName }).join(', ')
+
+
+
     }
 
     const ctx = {
         title: 'Details Page',
         post,
-        isowner
+        isowner,
+        userVoted,
+        allUsersVoteds
     }
     res.render('details', ctx)
 })
+
+router.get('/voteup/:id', preloadPost(), async (req, res) => {
+
+
+
+    const post = req.data.post;
+
+    const userId = req.user._id;
+
+    post.votes.push(userId)
+    post.rating++;
+    console.log(post, '====post===')
+
+    try {
+        await req.storage.vote(post._id, post)
+    } catch (err) {
+        error = err.message
+
+    }
+
+    res.redirect(`/posts/details/${post._id}`)
+
+})
+
+router.get('/votedwn/:id', preloadPost(), async (req, res) => {
+
+
+    const post = req.data.post;
+
+    const userId = req.user._id;
+
+    post.votes.push(userId)
+    post.rating--;
+
+
+    try {
+        await req.storage.vote(post._id, post)
+    } catch (err) {
+        error = err.message
+
+    }
+
+    res.redirect(`/posts/details/${post._id}`)
+
+})
+
 
 
 

@@ -1,5 +1,5 @@
 const Post = require('../models/Post');
-
+const User = require('../models/User')
 
 async function create(post) {
     console.log(post)
@@ -43,9 +43,29 @@ async function getById(id) {
     }
 }
 
+async function vote(id,post){
+    const exsisting = await Post.findById(id);
+
+    if(!exsisting){
+        throw new ReferenceError('No such ID in database')
+    }
+
+    Object.assign(exsisting,post);
+    return exsisting.save();
+
+
+}
+
+async function getUserById(id) {
+    return await User.findById(id).lean()
+}
+
 
 module.exports = {
     create,
     getAll,
-    getById
+    getById,
+    vote,
+    getUserById
+    
 }
