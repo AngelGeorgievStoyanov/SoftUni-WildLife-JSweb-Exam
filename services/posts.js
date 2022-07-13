@@ -78,6 +78,11 @@ async function edit(id,post){
 
 }
 
+async function getAllPosts(userId) {
+    
+    return await Post.find({ "author": `${userId}` }).populate('author').lean();
+}
+
 
 module.exports = {
     create,
@@ -86,6 +91,7 @@ module.exports = {
     vote,
     getUserById,
     deletePost,
-    edit
+    edit,
+    getAllPosts
     
 }

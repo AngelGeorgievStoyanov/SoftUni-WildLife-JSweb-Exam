@@ -46,7 +46,7 @@ router.post('/create', async (req, res) => {
 
     try {
         await req.storage.create(post)
-        res.redirect('/allPosts')
+        res.redirect('/posts/allPosts')
     } catch (err) {
         let arr = err.message.split(', ')
         const ctx = {
@@ -226,5 +226,22 @@ router.post('/edit/:id', preloadPost(), isOwner(), async (req, res) => {
 
 })
 
+
+router.get('/myPosts', async(req,res)=>{
+
+
+
+    const posts = await req.storage.getAllPosts(req.user._id)
+
+    
+
+    const ctx={
+        title:'My Posts',
+        posts
+      
+    }
+
+    res.render('myPosts',ctx)
+})
 
 module.exports = router;
