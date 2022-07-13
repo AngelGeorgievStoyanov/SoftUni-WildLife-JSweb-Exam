@@ -21,7 +21,19 @@ module.exports = () => (req, res, next) => {
 
     async function register({ firstName, lastName, email, password, repass }) {
 
+        const existingEmail = await userService.getUserByEmail(email);
 
+        if (existingEmail) {
+            throw new Error('Email is taken');
+        }
+        if (password.length < 4) {
+            throw new Error('Password must be min 4 char!')
+        }
+        if (firstName == '' || lastName == '' || password == '' || repass == '', email == '') {
+            throw new Error('All fields are required!');
+        } else if (password != repass) {
+            throw new Error('Passwords don\'t match!');
+        }
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const user = await userService.createUser(firstName, lastName, email, hashedPassword);
