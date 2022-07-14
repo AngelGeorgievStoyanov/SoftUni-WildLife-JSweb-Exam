@@ -227,21 +227,23 @@ router.post('/edit/:id', preloadPost(), isOwner(), async (req, res) => {
 })
 
 
-router.get('/myPosts', async(req,res)=>{
+router.get('/myPosts', async (req, res) => {
 
+    if (req.user == undefined) {
 
+        res.redirect('/auth/login')
+    } else {
 
-    const posts = await req.storage.getAllPosts(req.user._id)
+        const posts = await req.storage.getAllPosts(req.user._id)
 
-    
+        const ctx = {
+            title: 'My Posts',
+            posts
 
-    const ctx={
-        title:'My Posts',
-        posts
-      
+        }
+
+        res.render('myPosts', ctx)
     }
-
-    res.render('myPosts',ctx)
 })
 
 module.exports = router;
